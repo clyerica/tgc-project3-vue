@@ -8,7 +8,7 @@
            aria-current="page"
            v-on:click="goAllRecipes"
          >
-           Recipes
+           <font-awesome-icon icon="fa-solid fa-house" />
          </button>
        </li>
        <li class="nav-item">

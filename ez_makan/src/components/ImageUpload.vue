@@ -1,8 +1,7 @@
 <template>
  <div>
-   <h1>UploadCare Demo</h1>
    <Uploadcare publicKey="87fe3f3a8488ce1e20c9">
-     <button>Upload</button>
+     <button class="btn btn-warning btn-sm">Upload</button>
    </Uploadcare>
  </div>
 </template>

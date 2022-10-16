@@ -1,6 +1,10 @@
 <template>
 <div>
-    <form class="dropdown-item p-3 d-flex flex-column">
+    <form class="dropdown-item  p-3 d-flex flex-column overflow-auto" >
+        <div class="mb-2 d-flex justify-content-between">
+        <h1>Search</h1>
+        <button class="btn btn-sm btn-outline-secondary my-2">Reset</button>
+        </div>
         <div class="mb-3">
             <label for="searchTitle" class="form-label">Recipe Name</label>
             <input type="text" class="form-control" id="searchTitle" placeholder="Look for your favourite recipe!" v-model="searchTitle">
@@ -101,8 +105,7 @@
             <label for="searchServes" class="form-label">Serves</label>
             <input type="number" class="form-control" id="searchServes" v-model="searchServes">
         </div>
-        <button class="btn btn-outline-secondary">Reset Search</button>
-        <button type="submit" class="btn btn-warning">Find my recipes!</button>
+        <button type="submit" class="btn btn-warning">Look for recipes!</button>
     </form>
 </div>
 </template>
@@ -120,3 +123,4 @@
         }
     }
 </script>
+

@@ -1,67 +1,125 @@
 <template>
  <div>
-   <nav class= "navbar fixed-bottom bg-warning">
-    <div class="container-fluid d-flex justify-content-evenly"> 
-          <div class="nav-item">
-            <a
-              class="nav-link active"
-              aria-current="page"
-              v-on:click="goAllRecipes"
-            >
-              <font-awesome-icon icon="fa-solid fa-house"/>
-            </a>
+   <nav class= "navbar fixed-top bg-warning d-none d-md-block">
+        <div class="container d-flex flex-row justify-content-start"> 
+            <a class="navbar-brand">MakanBuddy</a>
+            <div class="nav-item mx-3">
+              <a class ="nav-link" v-on:click="goHome">
+                Home 
+              </a>
+            </div>
+            <div class="nav-item mx-3">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                v-on:click="goAllRecipes"
+              >
+                Recipes
+              </a>
+            </div>
+            <div class="nav-item mx-3">
+              <a class="nav-link active" v-on:click="goAddRecipe">
+               Add Recipe
+              </a>
+            </div>
           </div>
-          <div class="nav-item dropup dropup-center">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-target="dropupSearch" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-              <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
-            </a>
-            <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch"/>
-          </div>
-          <div class="nav-item">
-            <a class="nav-link active" v-on:click="goAddRecipe">
-              <font-awesome-icon icon="fa-solid fa-folder-plus" />
-            </a>
-          </div>
+      </nav>
+    
+    <main>
+    <div id="coverImage" class="d-none d-md-block">
+    </div>
+      <div>
+        <HomePage v-if="this.page == 'home'" />
+        <div class="d-flex flex-row" v-if="this.page == 'all'" >
+          <SearchForm class="d-none d-md-block pt-4" id="searchBar"/>
+          <AllRecipes/>
+        </div>
+        <AddRecipe v-if="this.page == 'add'" />
       </div>
-   </nav>
-   <main>
-       <AllRecipes v-if="this.page == 'all'" />
-       <AddRecipe v-if="this.page == 'add'" />
     </main> 
-
+  <nav class= "navbar fixed-bottom bg-warning d-md-none">
+    <div class="container-fluid d-flex justify-content-evenly"> 
+      <div class="nav-item">
+        <a
+          class="nav-link active"
+          v-on:click="goAllRecipes"
+        >
+          <font-awesome-icon icon="fa-solid fa-house"/>
+        </a>
+      </div>
+        <div class="nav-item dropup dropup-center">
+          <span class="nav-link dropdown-toggle" role="button" data-bs-target="dropupSearch" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
+          </span>
+          <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch"/>
+        </div>
+        <div class="nav-item">
+          <a class="nav-link" v-on:click="goAddRecipe">
+            <font-awesome-icon icon="fa-solid fa-folder-plus" />
+          </a>
+        </div>
+      </div>
+    </nav>
  </div>
 </template>
 
 <style>
+main{
+  padding-bottom:56px
+}
 #dropupSearch{
-    height:400px; 
-    min-width:350px !important;
-    position: absolute;
-    transform: translateX(-46%)
+  height:400px; 
+  min-width:350px !important;
+  position: absolute;
+  transform: translateX(-46%);
+  background-color: #fcf5c7
+}
+#searchBar{
+  max-width:250px;
+  background-color: #fcf5c7
+}
+#coverImage{
+  height:200px;
+  width:100vw;
+  background: url('../public/pexels_food.jpg');
+  background-repear: no-repeat;
+  background-size:cover;
+}
+
+@media screen and (min-width: 768px) {
+  main{
+    padding-top:56px;
+    padding-bottom:0px
+  }
 }
 </style>
 
 <script>
+import HomePage from "./components/HomePage";
 import AllRecipes from "./components/AllRecipes";
-import AddRecipe from "./components/AddRecipe"
-import SearchForm from "./components/SearchForm"
+import AddRecipe from "./components/AddRecipe";
+import SearchForm from "./components/SearchForm";
 export default {
  name: "App",
  components:{
-   AllRecipes, AddRecipe, SearchForm
+   AllRecipes, AddRecipe, SearchForm, HomePage
  },
  data:function(){
    return {
-     'page':'all'
+     'page':'all',
+     coverImage:'url("pexels_food.jpg")'
    }
  },
  methods: {
-   goAllRecipes: function () {
-     this.page = "all";
-   },
-   goAddRecipe: function () {
-     this.page = "add";
-   },
+    goHome: function () {
+      this.page="home"
+    },
+    goAllRecipes: function () {
+      this.page = "all";
+    },
+    goAddRecipe: function () {
+      this.page = "add";
+     },
  }
 };
 </script>

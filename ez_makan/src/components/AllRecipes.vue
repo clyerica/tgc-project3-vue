@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <h1>All Recipes</h1>
-    <div class="container">
+  <div class="container pt-4">
     <div class="row row-cols-1 row-cols-md-3 g-3">
       <div class="px-2" v-for="r in recipes" v-bind:key="r._id">
       <div class="card">
@@ -21,12 +19,12 @@
               <h6 class="card-subtitle text-center text-muted">Serves: {{r.serves}}</h6>
             </div>
             <div class="card-footer text-bg-warning text-center mt-auto">
-              Make me!
+              Start Cooking
+              <font-awesome-icon icon="fa-solid fa-arrow-right-long" />
             </div>
           </div>
         </div>
       </div>          
-      </div>
     </div>
       
     </div>

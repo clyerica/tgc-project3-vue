@@ -1,17 +1,17 @@
 <template>
 <div>
-    <form class="dropdown-item  px-3 d-flex flex-column overflow-auto" >
+    <form class="dropdown-item py-2 px-3 d-flex flex-column overflow-auto" >
         <div class="mb-2 d-flex justify-content-between">
-        <h1>Search</h1>
-        <button class="btn btn-sm btn-outline-secondary my-2">Reset</button>
+        <h3>Search</h3>
+        <button class="btn btn-sm btn-outline-secondary" v-on:click="resetSearch">Reset</button>
         </div>
         <div class="mb-3">
             <label for="searchTitle" class="form-label">Recipe Name</label>
-            <input type="text" class="form-control" id="searchTitle" placeholder="Look for your favourite recipe!" v-model="searchTitle">
+            <input type="text" class="form-control" id="searchTitle" placeholder="Search recipes" v-model="searchTitle">
         </div>
         <div class="mb-3">
         <label class="form-label">Course</label>
-        <div class="d-flex flex-wrap ">
+        <div class="d-flex flex-wrap justify-content-start">
             <div class="form-check me-3">
                 <input type="checkbox" class="form-check-input" id="searchBreakfast" value="breakfast" v-model="searchCourse">
                 <label class="form-check-label" for="searchBreakfast">Breakfast</label>
@@ -41,7 +41,7 @@
         <div class="mb-3">
             <label for="searchCuisine" class="form-label">Cuisine</label>
             <select class="form-select" id="searchCuisine" v-model="searchCuisine">
-                <option value="">Open select menu</option>
+                <option value="">Open menu</option>
                 <option value="african">African</option>
                 <option value="american">American</option>
                 <option value="asian">Asian</option>
@@ -120,7 +120,21 @@
                 searchDiet:[],
                 searchServes:""
             }
-        }
+        },
+        methods: {
+            resetSearch: function () {
+                this.searchTitle="",
+                this.searchCourse=[],
+                this.searchCuisine="",
+                this.searchDiet=[],
+                this.searchServes=""
+            }
+        }      
     }
 </script>
 
+<style>
+    form{
+        background-color: #fcf5c7
+    }
+</style>

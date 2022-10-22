@@ -1,6 +1,6 @@
 <template>
   <div class="container pt-4">
-    <div class="row row-cols-1 row-cols-md-3 g-3">
+    <div class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-3">
       <div class="px-2" v-for="r in recipes" v-bind:key="r._id">
       <div class="card">
         <div class="card-header d-flex flex-wrap justify-content-evenly text-bg-secondary">

@@ -26,17 +26,22 @@
       </nav>
     
     <main>
-    <div id="coverImage" class="d-none d-md-block">
+    <div id="coverImage" class="d-none d-md-block" 
+    v-bind:style="{background:coverImageUrl, backgroundSize:coverImageSize}"
+    >
+    <h1 class="my-auto text-center" style="transform:translateY(60px)" >{{this.message}}</h1>
     </div>
       <div>
         <HomePage v-if="this.page == 'home'" />
         <div class="d-flex flex-row" v-if="this.page == 'all'" >
-          <SearchForm class="d-none d-md-block pt-4" id="searchBar"/>
-          <AllRecipes/>
+          <SearchForm class="d-none d-md-block py-4 px-3 col-md-3" id="searchBar"/>
+          <AllRecipes class="col-md-9"/>
         </div>
         <AddRecipe v-if="this.page == 'add'" />
       </div>
     </main> 
+    <footer class="text-bg-dark" style="height:100px">
+    </footer>
   <nav class= "navbar fixed-bottom bg-warning d-md-none">
     <div class="container-fluid d-flex justify-content-evenly"> 
       <div class="nav-item">
@@ -75,15 +80,13 @@ main{
   background-color: #fcf5c7
 }
 #searchBar{
-  max-width:250px;
+  min-width:250px;
   background-color: #fcf5c7
 }
 #coverImage{
   height:200px;
   width:100vw;
-  background: url('../public/pexels_food.jpg');
-  background-repear: no-repeat;
-  background-size:cover;
+  
 }
 
 @media screen and (min-width: 768px) {
@@ -107,7 +110,9 @@ export default {
  data:function(){
    return {
      'page':'all',
-     coverImage:'url("pexels_food.jpg")'
+     coverImageUrl:'url("pexels_food.jpg") 0% 0% / cover',
+     coverImageSize:'cover',
+     message:'Browse Recipes'
    }
  },
  methods: {
@@ -116,9 +121,13 @@ export default {
     },
     goAllRecipes: function () {
       this.page = "all";
+      this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
+      this.message='Browse Recipes'
     },
     goAddRecipe: function () {
       this.page = "add";
+      this.coverImageUrl='url("pexels_recipe.jpg") 0% 50% / cover'
+      this.message='Add Recipe'
      },
  }
 };

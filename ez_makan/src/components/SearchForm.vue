@@ -1,6 +1,6 @@
 <template>
 <div>
-    <form class="dropdown-item  p-3 d-flex flex-column overflow-auto" >
+    <form class="dropdown-item  px-3 d-flex flex-column overflow-auto" >
         <div class="mb-2 d-flex justify-content-between">
         <h1>Search</h1>
         <button class="btn btn-sm btn-outline-secondary my-2">Reset</button>

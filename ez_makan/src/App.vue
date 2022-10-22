@@ -24,10 +24,10 @@
           </div>
       </div>
    </nav>
-   <div>
+   <main>
        <AllRecipes v-if="this.page == 'all'" />
        <AddRecipe v-if="this.page == 'add'" />
-    </div> 
+    </main> 
 
  </div>
 </template>
@@ -37,7 +37,7 @@
     height:400px; 
     min-width:350px !important;
     position: absolute;
-    transform: translateX(-45%)
+    transform: translateX(-46%)
 }
 </style>
 

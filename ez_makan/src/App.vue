@@ -25,21 +25,26 @@
           </div>
       </nav>
     
-    <main>
+  <main>
     <div id="coverImage" class="d-none d-md-block" 
     v-bind:style="{background:coverImageUrl, backgroundSize:coverImageSize}"
     >
-    <h1 class="my-auto text-center" style="transform:translateY(60px)" >{{this.message}}</h1>
+      <h1 class="my-auto text-center" style="transform:translateY(60px)" >{{this.message}}</h1>
     </div>
       <div>
         <HomePage v-if="this.page == 'home'" />
         <div class="d-flex flex-row" v-if="this.page == 'all'" >
-          <SearchForm class="d-none d-md-block py-4 px-3 col-md-3" id="searchBar"/>
-          <AllRecipes class="col-md-9"/>
+          <SearchForm class="d-none d-md-block py-4 px-lg-3 col-md-3" id="searchBar" @searchSubmitted="filterResults"/>
+          <AllRecipes class="col-md-9" v-bind:recipesData="recipes" v-if="recipes.length!=0"/>
+          <div v-else class="p-4">
+            <h4>No Recipes Found!</h4>
+            Click here to return to all recipes
+          </div>
         </div>
         <AddRecipe v-if="this.page == 'add'" />
       </div>
     </main> 
+
     <footer class="text-bg-dark" style="height:100px">
     </footer>
   <nav class= "navbar fixed-bottom bg-warning d-md-none">
@@ -56,7 +61,7 @@
           <span class="nav-link dropdown-toggle" role="button" data-bs-target="dropupSearch" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </span>
-          <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch"/>
+          <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch" @searchSubmitted="filterResults"/>
         </div>
         <div class="nav-item">
           <a class="nav-link" v-on:click="goAddRecipe">
@@ -102,17 +107,26 @@ import HomePage from "./components/HomePage";
 import AllRecipes from "./components/AllRecipes";
 import AddRecipe from "./components/AddRecipe";
 import SearchForm from "./components/SearchForm";
+import axios from "axios";
+
+const API_URL = "http://localhost:3000";
+
 export default {
  name: "App",
  components:{
    AllRecipes, AddRecipe, SearchForm, HomePage
+ },
+  created: async function () {
+   let response = await axios.get(API_URL + "/recipes/all");
+   this.recipes = response.data
  },
  data:function(){
    return {
      'page':'all',
      coverImageUrl:'url("pexels_food.jpg") 0% 0% / cover',
      coverImageSize:'cover',
-     message:'Browse Recipes'
+     message:'Browse Recipes',
+     recipes:[]
    }
  },
  methods: {
@@ -129,6 +143,11 @@ export default {
       this.coverImageUrl='url("pexels_recipe.jpg") 0% 50% / cover'
       this.message='Add Recipe'
      },
+     filterResults: async function (newSearch) {
+      let queryString = Object.keys(newSearch).map(key => key + '=' + newSearch[key]).join('&');
+      let response=await axios.get(API_URL+"/recipes?"+queryString)
+      this.recipes=response.data
+     }
  }
 };
 </script>

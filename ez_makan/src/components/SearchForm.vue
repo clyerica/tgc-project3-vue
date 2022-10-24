@@ -1,6 +1,6 @@
 <template>
 <div>
-    <form class="dropdown-item py-2 px-3 d-flex flex-column overflow-auto" >
+    <div class="dropdown-item py-2 px-3 d-flex flex-column overflow-auto" >
         <div class="mb-2 d-flex justify-content-between">
         <h3>Search</h3>
         <button class="btn btn-sm btn-outline-secondary" v-on:click="resetSearch">Reset</button>
@@ -105,8 +105,8 @@
             <label for="searchServes" class="form-label">Serves</label>
             <input type="number" class="form-control" id="searchServes" v-model="searchServes">
         </div>
-        <button type="submit" class="btn btn-warning">Look for recipes!</button>
-    </form>
+        <button class="btn btn-warning" v-on:click="searchFilter">Look for recipes!</button>
+    </div>
 </div>
 </template>
 
@@ -128,6 +128,25 @@
                 this.searchCuisine="",
                 this.searchDiet=[],
                 this.searchServes=""
+            },
+            searchFilter:function () {
+                let newSearch={}
+                if (this.searchTitle){
+                    newSearch.title=this.searchTitle
+                }
+                if(this.searchCourse.length>0){
+                    newSearch.course=this.searchCourse.join('+')
+                }
+                if(this.searchCuisine){
+                    newSearch.cuisine=this.searchCuisine
+                }
+                if (this.searchDiet.length>0){
+                    newSearch.diet=this.searchDiet.join('+')
+                }
+                if (this.searchServes){
+                    newSearch.serves=parseInt(this.searchServes)
+                }
+                this.$emit('searchSubmitted', newSearch)
             }
         }      
     }

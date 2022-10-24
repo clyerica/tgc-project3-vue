@@ -16,7 +16,7 @@
               <h5 class="card-title text-center mb-3">{{recipe.title}}</h5>
               <h6 class="card-subtitle text-center text-muted">Serves: {{recipe.serves}}</h6>
             </div>
-            <div class="card-footer text-bg-warning text-center mt-auto">
+            <div class="card-footer text-bg-warning text-center mt-auto" v-on:click="recipeClicked">
               Start Cooking
               <font-awesome-icon icon="fa-solid fa-arrow-right-long" />
             </div>
@@ -28,6 +28,11 @@
 
 <script>
     export default{
-        props:['recipe']
+        props:['recipe'],
+        methods:{
+            recipeClicked:function(){
+                this.$emit('recipeChosen', this.recipe)
+            }
+        }
     }
 </script>

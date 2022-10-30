@@ -122,9 +122,9 @@
              v-on:keyup.enter='addIngredient' v-model='newIngredient'/>
         </div>
         <div class="col-12" v-if="recipe.ingredients.length!==0">
-            <ol class="list-group list-group-numbered">
+            <ul class="list-group list-group">
                 <ListItem v-for='i in recipe.ingredients' v-bind:key='i' v-bind:item='i' @deleteItem='ingredientDeleted'/>
-            </ol>
+            </ul>
         </div>
     </div>
 
@@ -160,19 +160,10 @@
         components:{
         ImageUpload, ListItem
         },
+        props:['initialRecipe'],
         data: function(){
             return{
-                recipe:{
-                    title:'',
-                    imageURL:'',
-                    course:[],
-                    diet:[],
-                    cuisine:'',
-                    serves:'',
-                    ingredients:[],
-                    method:[],
-                    username:''
-                },
+                recipe: {...this.initialRecipe},
                 newStep:'',
                 newIngredient:'',
                 pageNumber:'1'

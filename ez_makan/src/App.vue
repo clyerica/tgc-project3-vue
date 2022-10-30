@@ -4,11 +4,6 @@
         <div class="container d-flex flex-row justify-content-start"> 
             <a class="navbar-brand">MakanBuddy</a>
             <div class="nav-item mx-3">
-              <a class ="nav-link" v-on:click="goHome">
-                Home 
-              </a>
-            </div>
-            <div class="nav-item mx-3">
               <a
                 class="nav-link active"
                 aria-current="page"
@@ -26,26 +21,28 @@
       </nav>
     
   <main>
-    <div id="coverImage" class="d-none d-md-block" 
+    <div id="coverImage"
     v-bind:style="{background:coverImageUrl, backgroundSize:coverImageSize}"
     >
-      <h1 class="my-auto text-center" style="transform:translateY(60px)" >{{this.message}}</h1>
+      <h1 class="my-auto text-center" style="transform:translateY(65px)" >{{this.message}}</h1>
     </div>
       <div>
         <HomePage v-if="this.page == 'home'" />
         <div class="d-flex flex-row" v-if="this.page == 'all'" >
           <SearchForm class="d-none d-md-block py-4 px-lg-3 col-md-3" id="searchBar" @searchSubmitted="filterResults"/>
-          <AllRecipes class="col-md-9" v-bind:recipesData="recipes" v-if="recipes.length!=0"/>
+          <AllRecipes class="col-md-9" v-bind:recipesData="recipes" v-if="recipes.length!=0" 
+          @findRecipe="showRecipe"/>
           <div v-else class="p-4">
             <h4>No Recipes Found!</h4>
-            Click here to return to all recipes
+            <p v-on:click="returnAll">Click here to return to all recipes</p>
           </div>
         </div>
-        <AddRecipe v-if="this.page == 'add'" />
+        <RecipeForm v-if="this.page == 'add'" @recipeSubmitted='addRecipe' />
+        <DetailedRecipe v-if="this.page=='recipe'" v-bind:recipe='this.r' 
+        @editSubmitted="editRecipe" @deleteSubmitted="deleteRecipe"/>
       </div>
     </main> 
-
-    <footer class="text-bg-dark" style="height:100px">
+    <footer class="text-bg-dark d-none d-md-block" style="height:100px">
     </footer>
   <nav class= "navbar fixed-bottom bg-warning d-md-none">
     <div class="container-fluid d-flex justify-content-evenly"> 
@@ -57,11 +54,13 @@
           <font-awesome-icon icon="fa-solid fa-house"/>
         </a>
       </div>
-        <div class="nav-item dropup dropup-center">
+        <div class="nav-item dropup dropup-center" data-bs-auto-close="true">
           <span class="nav-link dropdown-toggle" role="button" data-bs-target="dropupSearch" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </span>
-          <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch" @searchSubmitted="filterResults"/>
+          <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch"
+          v-bind:initialRecipe="{title:'', imageURL:'', course:[], diet:[],  cuisine:'', serves:'', ingredients:[], method:[], username:''}" 
+          @searchSubmitted="filterResults"/>
         </div>
         <div class="nav-item">
           <a class="nav-link" v-on:click="goAddRecipe">
@@ -75,18 +74,19 @@
 
 <style>
 main{
-  padding-bottom:56px
+  padding-bottom:56px;
+  background-color: #fcf5c7;
+  min-height: 100vh
 }
 #dropupSearch{
   height:400px; 
   min-width:350px !important;
   position: absolute;
   transform: translateX(-46%);
-  background-color: #fcf5c7
+  
 }
 #searchBar{
   min-width:250px;
-  background-color: #fcf5c7
 }
 #coverImage{
   height:200px;
@@ -103,10 +103,10 @@ main{
 </style>
 
 <script>
-import HomePage from "./components/HomePage";
 import AllRecipes from "./components/AllRecipes";
-import AddRecipe from "./components/AddRecipe";
+import RecipeForm from "./components/RecipeForm";
 import SearchForm from "./components/SearchForm";
+import DetailedRecipe from "./components/DetailedRecipe";
 import axios from "axios";
 
 const API_URL = "http://localhost:3000";
@@ -114,7 +114,7 @@ const API_URL = "http://localhost:3000";
 export default {
  name: "App",
  components:{
-   AllRecipes, AddRecipe, SearchForm, HomePage
+   AllRecipes, RecipeForm, SearchForm, DetailedRecipe
  },
   created: async function () {
    let response = await axios.get(API_URL + "/recipes/all");
@@ -122,32 +122,69 @@ export default {
  },
  data:function(){
    return {
-     'page':'all',
+     page:'all',
      coverImageUrl:'url("pexels_food.jpg") 0% 0% / cover',
      coverImageSize:'cover',
      message:'Browse Recipes',
-     recipes:[]
+     recipes:[],
+     r:{}
    }
  },
  methods: {
-    goHome: function () {
-      this.page="home"
-    },
     goAllRecipes: function () {
       this.page = "all";
       this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
       this.message='Browse Recipes'
+      window.scrollTo(0, 0);
     },
     goAddRecipe: function () {
       this.page = "add";
       this.coverImageUrl='url("pexels_recipe.jpg") 0% 50% / cover'
       this.message='Add Recipe'
+      window.scrollTo(0, 0);
      },
-     filterResults: async function (newSearch) {
+    filterResults: async function (newSearch) {
+      this.page='all'
       let queryString = Object.keys(newSearch).map(key => key + '=' + newSearch[key]).join('&');
       let response=await axios.get(API_URL+"/recipes?"+queryString)
       this.recipes=response.data
-     }
+     },
+    returnAll: async function(){
+      this.page='all'
+      let response = await axios.get(API_URL + "/recipes/all");
+      this.recipes = response.data
+    },
+    addRecipe: async function (newRecipe) {
+        let response = await axios.post(API_URL + "/recipes/create", newRecipe);
+        this.page="all"
+     console.log(response.data);
+     },
+    showRecipe: function(recipe){
+      this.r=recipe
+      window.scrollTo(0, 0)
+      this.coverImageUrl='url('+recipe.imageURL+') 0% 40% / cover'
+      this.message= recipe.title
+      this.page='recipe'
+     },
+    editRecipe: async function(editedRecipe){
+      console.log(editedRecipe.diet)
+      let response=await axios.put(API_URL+'/recipes/'+editedRecipe._id+'/update', {
+        title: editedRecipe.title,
+        imageURL: editedRecipe.imageURL,
+        ingredients: editedRecipe.ingredients,
+        course: editedRecipe.course, 
+        cuisine: editedRecipe.cuisine,
+        diet: editedRecipe.diet,
+        serves: editedRecipe.serves,
+        method:editedRecipe.method
+      })
+      console.log(response.data)
+    },
+    deleteRecipe:async function(deletedRecipe){
+      let response=await axios.delete(API_URL+'/recipes/'+deletedRecipe._id+'/delete')
+      this.page='all'
+      console.log(response)
+    }
  }
 };
 </script>

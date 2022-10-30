@@ -1,6 +1,6 @@
 <template>
-  <div class="container py-4">
-    <div class="pe-md-5 pe-lg-0 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4  g-3 d-flex algin-items-stretch">
+  <div class="container py-4 ">
+    <div class="pe-md-5 pe-lg-0 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4  g-3 d-flex justify-content-center align-items-stretch">
       <RecipePreview v-for="r in recipesData" v-bind:key="r._id" v-bind:recipe="r" class="px-2 align-self-stretch" 
       @chooseRecipe="recipeChosen"/>        
     </div>

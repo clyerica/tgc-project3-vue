@@ -24,7 +24,7 @@
     <div id="coverImage"
     v-bind:style="{background:coverImageUrl, backgroundSize:coverImageSize}"
     >
-      <h1 class="my-auto text-center" style="transform:translateY(65px)" >{{this.message}}</h1>
+      <h1 class="my-auto text-center text-bg-light py-2 mx-5" style="transform:translateY(65px); opacity:75%" >{{this.message}}</h1>
     </div>
     <div>
       <HomePage v-if="this.page == 'home'" />
@@ -43,7 +43,7 @@
         @editSubmitted="editRecipe" @deleteSubmitted="deleteRecipe"/>
     </div>
   </main>
-  <footer>
+  <footer class="d-none d-md-block">
     <div style='background-color: black; height:100px'>
     </div>
   </footer>
@@ -90,17 +90,14 @@ main{
 }
 #searchBar{
   min-width:250px;
-  background-color:floralwhite
+  background-color:ivory
 }
 #coverImage{
   height:200px;
   width:100vw;
   
 }
-#addForm{
-  background-color: white;
-  border-radius:10px
-}
+
 
 @media screen and (min-width: 768px) {
   main{
@@ -159,14 +156,18 @@ export default {
      },
     returnAll: async function(){
       this.page='all'
+      this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
+      this.message='Browse Recipes'
       let response = await axios.get(API_URL + "/recipes/all");
       this.recipes = response.data
     },
     addRecipe: async function (newRecipe) {
-        let response = await axios.post(API_URL + "/recipes/create", newRecipe);
-        let getResponse = await axios.get(API_URL + "/recipes/all");
-        this.recipes = getResponse.data
-        this.page="all"
+      this.page="all"
+      this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
+      this.message='Browse Recipes'
+      let response = await axios.post(API_URL + "/recipes/create", newRecipe);
+      let getResponse = await axios.get(API_URL + "/recipes/all");
+      this.recipes = getResponse.data      
       console.log(response.data);
      },
     showRecipe: function(recipe){
@@ -192,8 +193,12 @@ export default {
       console.log(response.data)
     },
     deleteRecipe:async function(deletedRecipe){
-      let response=await axios.delete(API_URL+'/recipes/'+deletedRecipe._id+'/delete')
       this.page='all'
+      this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
+      this.message='Browse Recipes'
+      let response=await axios.delete(API_URL+'/recipes/'+deletedRecipe._id+'/delete')
+      let getResponse = await axios.get(API_URL + "/recipes/all");
+        this.recipes = getResponse.data
       console.log(response)
     }
  }

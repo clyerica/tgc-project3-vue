@@ -1,5 +1,5 @@
 <template>
-<div class="container py-4">
+<div class="container py-4 recipeForm" >
     <div v-if='pageNumber==="1"' class="container row g-3">
         <div class="col-12">
             <label for="username" class="form-label">Your Name</label>
@@ -151,6 +151,13 @@
     </div>
 </div>
 </template>
+
+<style scoped>
+    .recipeForm{
+    background-color: ivory;
+    border-radius:10px
+    }
+</style>
 
 <script>
     import ImageUpload from './ImageUpload.vue'

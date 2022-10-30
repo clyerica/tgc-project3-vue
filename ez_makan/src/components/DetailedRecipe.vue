@@ -39,12 +39,17 @@
                     </div>    
                 </div>
                 <div class="tab-pane fade" id="edit-tab-pane" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
-                    <RecipeForm v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit" class="pe-4"/>
+                    <RecipeForm v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit" class="pe-4 mt-4"/>
                 </div>
                 <div class="tab-pane fade" id="delete-tab-pane" role="tabpanel" aria-labelledby="delete-tab" tabindex="0">
                     <div class="p-3 pe-4 container" >
                         <p>Are you sure you want to delete {{recipe.title}}? This action cannot be undone!</p>
-                        <button class='btn btn-dark my-3'>Delete {{recipe.title}}</button>
+                        <button class='btn btn-dark my-3' v-on:click='goDelete'
+                        v-bind:style="{backgroundColor: deleteColor}"
+                        @mouseover="deleteColor='darkred !important'"
+                        @mouseleave="deleteColor='black !important'">
+                        Delete {{recipe.title}}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -61,7 +66,7 @@
             <div class="col-12 col-md-8 ps-4 pe-5 pt-3">
             <div class='d-flex justify content-end'>
                 <h3 class='me-auto'>Method</h3>
-                <button class="btn btn-outline-dark me-2" v-on:click="goEdit">Edit</button>
+                <button class="btn btn-light me-2" v-on:click="goEdit">Edit</button>
                 <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
                     Delete
                 </button>
@@ -71,6 +76,7 @@
                         v-bind:style="{backgroundColor: deleteColor}"
                         @mouseover="deleteColor='darkred !important'"
                         @mouseleave="deleteColor='black !important'"
+                        v-on:click='goDelete'
                         >Delete {{recipe.title}}</button>
                 </div>
             </div>
@@ -82,6 +88,9 @@
             
         </div>     
     </div>
+    <button class='btn btn-light ms-5 my-3' v-if="this.editingRecipe==true" v-on:click="seeRecipe">
+        <font-awesome-icon icon="fa-solid fa-chevron-left"/> Go back
+    </button>
     <RecipeForm v-if="this.editingRecipe==true" v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit"/>
 </div>
 </template>
@@ -100,6 +109,12 @@
     }
     #ingredientsList{
         background-color:floralwhite
+    }
+    .btn-light{
+        background-color:ivory !important;
+        border-style:solid;
+        border-width:1px;
+        border-color:black
     }
 </style>
     
@@ -123,6 +138,9 @@
           submitEdit:function (recipe){
             this.editingRecipe=false
             this.$emit('editSubmitted', recipe)
+          },
+          seeRecipe: function(){
+            this.editingRecipe=false
           },
           goDelete: function(){
             this.$emit('deleteSubmitted',{...this.recipe})

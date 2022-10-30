@@ -1,7 +1,7 @@
 <template>
 <div>
     <div class="card" v-on:click="recipeClicked">
-        <div class="card-header d-flex overflow-hidden justify-content-evenly text-bg-secondary">
+        <div class="card-header d-flex flex-wrap justify-content-evenly text-bg-secondary">
           <span>
             <span class="badge text-bg-info me-1">{{recipe.cuisine}}</span>
           </span>

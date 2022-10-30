@@ -1,7 +1,7 @@
 <template>
  <div>
-   <nav class= "navbar fixed-top bg-warning d-none d-md-block">
-        <div class="container d-flex flex-row justify-content-start"> 
+   <nav class= "navbar  fixed-top bg-warning d-none d-md-block">
+        <div class="container-fluid d-flex flex-row justify-content-start"> 
             <a class="navbar-brand">MakanBuddy</a>
             <div class="nav-item mx-3">
               <a
@@ -20,30 +20,34 @@
           </div>
       </nav>
     
-  <main>
+  <main d-flex align-items-stretch>
     <div id="coverImage"
     v-bind:style="{background:coverImageUrl, backgroundSize:coverImageSize}"
     >
       <h1 class="my-auto text-center" style="transform:translateY(65px)" >{{this.message}}</h1>
     </div>
-      <div>
-        <HomePage v-if="this.page == 'home'" />
-        <div class="d-flex flex-row" v-if="this.page == 'all'" >
-          <SearchForm class="d-none d-md-block py-4 px-lg-3 col-md-3" id="searchBar" @searchSubmitted="filterResults"/>
-          <AllRecipes class="col-md-9" v-bind:recipesData="recipes" v-if="recipes.length!=0" 
+    <div>
+      <HomePage v-if="this.page == 'home'" />
+      <div class="d-flex flex-row" v-if="this.page == 'all'" >
+        <SearchForm class="d-none d-md-block py-4 px-md-3 col-md-3" id="searchBar" @searchSubmitted="filterResults"/>
+        <AllRecipes class="col-md-9" v-bind:recipesData="recipes" v-if="recipes.length!=0" 
           @findRecipe="showRecipe"/>
-          <div v-else class="p-4">
-            <h4>No Recipes Found!</h4>
-            <p v-on:click="returnAll">Click here to return to all recipes</p>
-          </div>
+        <div v-else class="p-4">
+          <h4>No Recipes Found!</h4>
+          <p v-on:click="returnAll">Click here to return to all recipes</p>
         </div>
-        <RecipeForm v-if="this.page == 'add'" @recipeSubmitted='addRecipe' />
-        <DetailedRecipe v-if="this.page=='recipe'" v-bind:recipe='this.r' 
-        @editSubmitted="editRecipe" @deleteSubmitted="deleteRecipe"/>
       </div>
-    </main> 
-    <footer class="text-bg-dark d-none d-md-block" style="height:100px">
-    </footer>
+      <RecipeForm v-if="this.page == 'add'" @recipeSubmitted='addRecipe' id="addForm" class="mt-4" 
+          v-bind:initialRecipe="{title:'', imageURL:'', course:[], diet:[],  cuisine:'', serves:'', ingredients:[], method:[], username:''}" />
+      <DetailedRecipe v-if="this.page=='recipe'" v-bind:recipe='this.r' 
+        @editSubmitted="editRecipe" @deleteSubmitted="deleteRecipe"/>
+    </div>
+  </main>
+  <footer>
+    <div style='background-color: black; height:100px'>
+    </div>
+  </footer>
+
   <nav class= "navbar fixed-bottom bg-warning d-md-none">
     <div class="container-fluid d-flex justify-content-evenly"> 
       <div class="nav-item">
@@ -59,7 +63,6 @@
             <font-awesome-icon icon="fa-solid fa-magnifying-glass" />
           </span>
           <SearchForm class="dropdown-menu overflow-auto mb-2" id="dropupSearch"
-          v-bind:initialRecipe="{title:'', imageURL:'', course:[], diet:[],  cuisine:'', serves:'', ingredients:[], method:[], username:''}" 
           @searchSubmitted="filterResults"/>
         </div>
         <div class="nav-item">
@@ -87,11 +90,16 @@ main{
 }
 #searchBar{
   min-width:250px;
+  background-color:floralwhite
 }
 #coverImage{
   height:200px;
   width:100vw;
   
+}
+#addForm{
+  background-color: white;
+  border-radius:10px
 }
 
 @media screen and (min-width: 768px) {
@@ -156,8 +164,10 @@ export default {
     },
     addRecipe: async function (newRecipe) {
         let response = await axios.post(API_URL + "/recipes/create", newRecipe);
+        let getResponse = await axios.get(API_URL + "/recipes/all");
+        this.recipes = getResponse.data
         this.page="all"
-     console.log(response.data);
+      console.log(response.data);
      },
     showRecipe: function(recipe){
       this.r=recipe
@@ -167,8 +177,7 @@ export default {
       this.page='recipe'
      },
     editRecipe: async function(editedRecipe){
-      console.log(editedRecipe.diet)
-      let response=await axios.put(API_URL+'/recipes/'+editedRecipe._id+'/update', {
+      let updates={
         title: editedRecipe.title,
         imageURL: editedRecipe.imageURL,
         ingredients: editedRecipe.ingredients,
@@ -177,7 +186,9 @@ export default {
         diet: editedRecipe.diet,
         serves: editedRecipe.serves,
         method:editedRecipe.method
-      })
+      }
+      console.log(updates)
+      let response=await axios.put(API_URL+'/recipes/'+editedRecipe._id+'/update', updates)
       console.log(response.data)
     },
     deleteRecipe:async function(deletedRecipe){

@@ -31,40 +31,50 @@
                     </div>  
                 </div>
                 <div class="tab-pane fade" id="method-tab-pane" role="tabpanel" aria-labelledby="method-tab" tabindex="0">
-                    <div class="p-3">
-                        <p class='text-muted d-flex justify-content-end'><span>By: {{recipe.username}}</span></p>
+                    <div class="p-3 pe-4">
+                        <p class='text-muted text-center'>By: {{recipe.username}}</p>
                         <ol>
-                            <li v-for='m in recipe.method' v-bind:key='m' class='mb-2'>{{m}}</li>
+                            <li v-for='m in recipe.method' v-bind:key='m' class='mb-2 pe-4'>{{m}}</li>
                         </ol> 
                     </div>    
                 </div>
                 <div class="tab-pane fade" id="edit-tab-pane" role="tabpanel" aria-labelledby="edit-tab" tabindex="0">
-                    <RecipeForm v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit"/>
+                    <RecipeForm v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit" class="pe-4"/>
                 </div>
                 <div class="tab-pane fade" id="delete-tab-pane" role="tabpanel" aria-labelledby="delete-tab" tabindex="0">
-                    <div class="p-3">
-                        Are you sure you want to delete? This action cannot be undone!
+                    <div class="p-3 pe-4 container" >
+                        <p>Are you sure you want to delete {{recipe.title}}? This action cannot be undone!</p>
                         <button class='btn btn-dark my-3'>Delete {{recipe.title}}</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="row py-3 d-none d-md-flex">
-            <div class="col-12 col-md-4 px-5 pe-md-4">
+        <div class="row d-none d-md-flex">
+            <div class="col-12 col-md-4 ps-5 pe-4 pe-md-4 pt-3" id="ingredientsList">
                 <h3>Ingredients</h3> 
                 <p> Makes {{recipe.serves}} servings</p>
                 <ul>
                     <li v-for='i in recipe.ingredients' v-bind:key='i'>{{i}}</li>
                 </ul>
             </div>
-            <div class="col-12 col-md-8 px-5 ps-md-0">
+            <div class="col-12 col-md-8 ps-4 pe-5 pt-3">
             <div class='d-flex justify content-end'>
                 <h3 class='me-auto'>Method</h3>
                 <button class="btn btn-outline-dark me-2" v-on:click="goEdit">Edit</button>
-                <button class="btn btn-dark" v-on:click="goDelete">Delete</button>
+                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Delete
+                </button>
+                <div class='dropdown-menu p-3 text-center' style="width:350px">
+                    <p>Are you sure you want to delete {{recipe.title}}? This action cannot be undone!</p>
+                        <button class='btn btn-dark my-3'
+                        v-bind:style="{backgroundColor: deleteColor}"
+                        @mouseover="deleteColor='darkred !important'"
+                        @mouseleave="deleteColor='black !important'"
+                        >Delete {{recipe.title}}</button>
+                </div>
             </div>
-                <ol>
+                <ol class='pt-3'>
                     <li v-for='m in recipe.method' v-bind:key='m' class='mb-2'>{{m}}</li>
                 </ol>
                 <p class='text-muted d-flex justify-content-end'><span>By: {{recipe.username}}</span></p>
@@ -75,6 +85,23 @@
     <RecipeForm v-if="this.editingRecipe==true" v-bind:initialRecipe='recipe' @recipeSubmitted="submitEdit"/>
 </div>
 </template>
+
+<style scoped>
+    .nav-tabs{
+        background-color: white;
+        font-weight:bold
+    }
+    .nav-link{
+        color:grey !important
+    }
+    .active{
+        background-color: #fcf5c7 !important;
+        color: black !important
+    }
+    #ingredientsList{
+        background-color:floralwhite
+    }
+</style>
     
 <script>
     import RecipeForm from './RecipeForm.vue'
@@ -85,7 +112,8 @@
         }, 
         data: function(){
             return ({
-                editingRecipe: false    
+                editingRecipe: false,
+                deleteColor: 'black !important'   
             })
         },
         methods:{

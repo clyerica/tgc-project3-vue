@@ -85,7 +85,7 @@
                 </div>
                 <div class="form-check me-3">
                     <input type="checkbox" class="form-check-input" id="searchKosher" value="kosher" v-model="searchDiet">
-                    <label class="form-check-label" for="searchHalal">Kosher</label>
+                    <label class="form-check-label" for="searchKosher">Kosher</label>
                 </div>
                 <div class="form-check me-3">
                     <input type="checkbox" class="form-check-input" id="searchGlutenFree" value="glutenfree" v-model="searchDiet">
@@ -103,7 +103,7 @@
         </div>
         <div class="mb-3">
             <label for="searchServes" class="form-label">Serves</label>
-            <input type="number" class="form-control" id="searchServes" v-model="searchServes">
+            <input type="number" class="form-control" id="searchServes" v-model="searchServes" min="1">
         </div>
         <button class="btn btn-warning" v-on:click="searchFilter">Look for recipes!</button>
     </div>
@@ -154,6 +154,6 @@
 
 <style>
     form{
-        background-color: #fcf5c7
+        background-color: floralwhite
     }
 </style>

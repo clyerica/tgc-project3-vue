@@ -1,5 +1,5 @@
 <template>
-<div class="container my-4">
+<div class="container py-4">
     <div v-if='pageNumber==="1"' class="container row g-3">
         <div class="col-12">
             <label for="username" class="form-label">Your Name</label>
@@ -195,15 +195,13 @@
                 this.newIngredient=''
             },
             stepDeleted:function(step){
-                let removeStep=step.join('')
                 this.recipe.method = this.recipe.method.filter(function(m) {
-                    return m !== removeStep
+                    return m !== step
                 })
             },
             ingredientDeleted:function(ingredient){
-                let removeIngredient=ingredient.join('')
-                this.recipe.ingredients = this.recipe.ingredients.filter(function(i) {
-                    return i !== removeIngredient
+                this.recipe.ingredients=this.recipe.ingredients.filter(function(i){
+                    return i!==ingredient
                 })
             },
             goPrevious: function(){

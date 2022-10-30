@@ -9,8 +9,8 @@
         props: ['item'],
         methods:{
             removeitem: function(){
-                let item=[...this.item]
-                this.$emit('deleteitem',item)
+                let item=[...this.item].join('')
+                this.$emit('deleteItem', item)
             }
         }
     }

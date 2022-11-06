@@ -147,7 +147,7 @@
         <button class='btn' v-if="pageNumber!=='3'" v-on:click="goNext">
             Next Page <font-awesome-icon icon="fa-solid fa-chevron-right" />
         </button>
-        <button v-if='pageNumber==="3"' v-on:click='submitRecipe' class="btn btn-warning">Share my recipe! <font-awesome-icon icon="fa-solid fa-chevron-right" /></button>
+        <button v-if='pageNumber==="3"' v-on:click='submitRecipe' class="btn btn-warning">Submit! <font-awesome-icon icon="fa-solid fa-chevron-right" /></button>
     </div>
 </div>
 </template>

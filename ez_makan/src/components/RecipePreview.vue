@@ -13,7 +13,7 @@
         </div>
         <div class="row g-0">
           <img class="col-7 col-md-12" style="object-fit:cover; height:250px" v-bind:src="recipe.imageURL">
-          <div class="card-body d-flex flex-column justify-content-center card-img-overlay d-none d-md-flex">
+          <div class="d-flex flex-column justify-content-center card-img-overlay d-none d-md-flex">
             <div class="py-2 px-2 img-overlay">
             <h5 class="card-title text-center mb-3" >{{recipe.title}}</h5>
             <h6 class="card-subtitle text-center" >Serves: {{recipe.serves}}</h6>
@@ -73,5 +73,8 @@
     border-style: solid;
     border-width:3px;
     border-color: orange
+  }
+  .card-body{
+    background-color:ivory
   }
 </style>

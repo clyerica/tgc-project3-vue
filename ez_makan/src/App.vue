@@ -137,24 +137,26 @@ export default {
  },
  methods: {
     goAllRecipes: function () {
+      window.scrollTo(0, 0);
       this.page = "all";
       this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
       this.message='Browse Recipes'
-      window.scrollTo(0, 0);
     },
     goAddRecipe: function () {
+      window.scrollTo(0, 0);
       this.page = "add";
       this.coverImageUrl='url("pexels_recipe.jpg") 0% 50% / cover'
       this.message='Add Recipe'
-      window.scrollTo(0, 0);
      },
     filterResults: async function (newSearch) {
+      window.scrollTo(0, 0);
       this.page='all'
       let queryString = Object.keys(newSearch).map(key => key + '=' + newSearch[key]).join('&');
       let response=await axios.get(API_URL+"/recipes?"+queryString)
       this.recipes=response.data
      },
     returnAll: async function(){
+      window.scrollTo(0, 0);
       this.page='all'
       this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
       this.message='Browse Recipes'
@@ -162,6 +164,7 @@ export default {
       this.recipes = response.data
     },
     addRecipe: async function (newRecipe) {
+      window.scrollTo(0, 0);
       this.page="all"
       this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
       this.message='Browse Recipes'
@@ -188,7 +191,6 @@ export default {
         serves: editedRecipe.serves,
         method:editedRecipe.method
       }
-      console.log(updates)
       let response=await axios.put(API_URL+'/recipes/'+editedRecipe._id+'/update', updates)
       console.log(response.data)
     },

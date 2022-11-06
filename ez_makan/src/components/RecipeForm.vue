@@ -316,12 +316,12 @@
                     }
                 }
                 else if (this.pageNumber==='1'){
-                    if (this.usernameOk){
-                        this.pageNumber='2'
-                        this.showPage1Error=false
-                    }
                     if (!this.usernameOk||!this.imageOk||!this.courseOk||!this.cuisineOk||!this.servesOk||!this.titleOk){
                         this.showPage1Error=true
+                    }
+                    else{
+                        this.pageNumber='2'
+                        this.showPage1Error=false
                     }
                 }
             }

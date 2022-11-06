@@ -283,24 +283,20 @@
                 }
             },
             stepDeleted:function(step){
-                let steps = this.recipe.method.filter(function(m) {
-                    return m != step
-                })
-                this.recipe.method=steps
+                let stepIndex = this.recipe.method.findIndex( s => s == step)
+                this.recipe.method.splice(stepIndex, 1)
             },
             ingredientDeleted:function(ingredient){
-                let ingredients=this.recipe.ingredients.filter(function(i){
-                    return i!= ingredient
-                })
-                this.recipe.ingredients=ingredients
+                let ingredientIndex = this.recipe.ingredients.findIndex( i => i == ingredient)
+                this.recipe.ingredients.splice(ingredientIndex, 1)
             },
             stepEdited: function(details){
-                let stepIndex = this.recipe.method.findIndex( s => s == details.originalItem);          
-                this.$set(this.recipe.method, stepIndex, details.editedItem);
+                let stepIndex = this.recipe.method.findIndex( s => s == details.originalItem)         
+                this.$set(this.recipe.method, stepIndex, details.editedItem)
             },
             ingredientEdited: function(details){
-                let ingredientIndex = this.recipe.ingredients.findIndex( i => i == details.originalItem);          
-                this.$set(this.recipe.ingredients, ingredientIndex, details.editedItem);
+                let ingredientIndex = this.recipe.ingredients.findIndex( i => i == details.originalItem)          
+                this.$set(this.recipe.ingredients, ingredientIndex, details.editedItem)
             },
             goPrevious: function(){
                 if (this.pageNumber==='2'){

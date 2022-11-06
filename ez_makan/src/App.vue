@@ -2,7 +2,9 @@
  <div>
    <nav class= "navbar  fixed-top bg-warning d-none d-md-block">
         <div class="container-fluid d-flex flex-row justify-content-start"> 
-            <a class="navbar-brand">MakanBuddy</a>
+            <a class="navbar-brand">
+              <font-awesome-icon icon="fa-solid fa-kitchen-set" />
+              MakanBuddy</a>
             <div class="nav-item mx-3">
               <a
                 class="nav-link active"
@@ -34,7 +36,7 @@
           @findRecipe="showRecipe"/>
         <div v-else class="p-4">
           <h4>No Recipes Found!</h4>
-          <p v-on:click="returnAll">Click here to return to all recipes</p>
+          <button class="btn btn-light" v-on:click="goAllRecipes">Click here to return to all recipes</button>
         </div>
       </div>
       <RecipeForm v-if="this.page == 'add'" @recipeSubmitted='addRecipe' id="addForm" class="mt-4" 
@@ -136,33 +138,27 @@ export default {
    }
  },
  methods: {
-    goAllRecipes: function () {
+    goAllRecipes: async function () {
       window.scrollTo(0, 0);
-      this.page = "all";
+      let response = await axios.get(API_URL + "/recipes/all");
+      this.recipes = response.data
       this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
       this.message='Browse Recipes'
+      this.page = "all";
     },
     goAddRecipe: function () {
       window.scrollTo(0, 0);
-      this.page = "add";
       this.coverImageUrl='url("pexels_recipe.jpg") 0% 50% / cover'
       this.message='Add Recipe'
+      this.page = "add";
      },
     filterResults: async function (newSearch) {
       window.scrollTo(0, 0);
-      this.page='all'
       let queryString = Object.keys(newSearch).map(key => key + '=' + newSearch[key]).join('&');
       let response=await axios.get(API_URL+"/recipes?"+queryString)
       this.recipes=response.data
-     },
-    returnAll: async function(){
-      window.scrollTo(0, 0);
       this.page='all'
-      this.coverImageUrl='url("pexels_food.jpg") 0% 0% / cover'
-      this.message='Browse Recipes'
-      let response = await axios.get(API_URL + "/recipes/all");
-      this.recipes = response.data
-    },
+     },
     addRecipe: async function (newRecipe) {
       window.scrollTo(0, 0);
       this.page="all"

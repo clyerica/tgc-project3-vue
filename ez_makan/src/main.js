@@ -5,7 +5,7 @@ import store from './store'
 import "bootstrap/dist/css/bootstrap.css"
 import "bootstrap"
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faArrowRightLong, faCheck, faChevronLeft, faChevronRight, faFolderPlus, faHouse,faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightLong, faCheck, faChevronLeft, faChevronRight, faFolderPlus, faHouse,faKitchenSet,faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import AllRecipes from "./components/AllRecipes";
@@ -13,7 +13,7 @@ import RecipeForm from "./components/RecipeForm";
 import DetailedRecipe from "./components/DetailedRecipe";
 import { faPenToSquare} from '@fortawesome/free-regular-svg-icons';
 
-library.add(faHouse, faMagnifyingGlass, faFolderPlus, faArrowRightLong,faChevronRight, faChevronLeft, faPenToSquare, faXmark, faCheck)
+library.add(faHouse, faMagnifyingGlass, faFolderPlus, faArrowRightLong,faChevronRight, faChevronLeft, faPenToSquare, faXmark, faCheck, faKitchenSet)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false

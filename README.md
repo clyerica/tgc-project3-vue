@@ -1,4 +1,4 @@
-# ez_makan
+# makanBuddy
 
 ## Project setup
 ```
